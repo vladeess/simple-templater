@@ -1,0 +1,3 @@
+Hello, ${user.name}!
+Your order ${order.id} is confirmed.
+Total: $${order.total}

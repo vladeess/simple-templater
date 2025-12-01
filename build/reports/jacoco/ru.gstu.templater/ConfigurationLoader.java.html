@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigurationLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">simple-templater</a> &gt; <a href="index.source.html" class="el_package">ru.gstu.templater</a> &gt; <span class="el_source">ConfigurationLoader.java</span></div><h1>ConfigurationLoader.java</h1><pre class="source lang-java linenums">package ru.gstu.templater;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
+/**
+ * Р—Р°РіСЂСѓР¶Р°РµС‚ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ РёР· С„Р°Р№Р»Р° app.properties.
+ */
+public class ConfigurationLoader {
+    private final Properties properties;
+
+    /**
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РіСЂСѓР¶Р°РµС‚ СЃРІРѕР№СЃС‚РІР° РёР· СѓРєР°Р·Р°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°.
+     *
+     * @param configFilePath РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ РєРѕРЅС„РёРіСѓСЂР°С†РёРё.
+     * @throws IOException РµСЃР»Рё С„Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ РёР»Рё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСЂРѕС‡РёС‚Р°РЅ.
+     */
+<span class="fc" id="L19">    public ConfigurationLoader(String configFilePath) throws IOException {</span>
+<span class="fc" id="L20">        properties = new Properties();</span>
+<span class="fc" id="L21">        try (FileReader reader = new FileReader(configFilePath)) {</span>
+<span class="fc" id="L22">            properties.load(reader);</span>
+        }
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * РџРѕР»СѓС‡Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЃРІРѕР№СЃС‚РІР° РїРѕ РєР»СЋС‡Сѓ.
+     *
+     * @param key РєР»СЋС‡ СЃРІРѕР№СЃС‚РІР°.
+     * @return Р·РЅР°С‡РµРЅРёРµ СЃРІРѕР№СЃС‚РІР°.
+     */
+    public String getProperty(String key) {
+<span class="fc" id="L33">        return properties.getProperty(key);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

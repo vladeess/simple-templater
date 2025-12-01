@@ -1,0 +1,29 @@
+# .gitignore
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Build directory
+/.gradle/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# virtual machine crash logs
+hs_err_pid*
+
+# Игнорируем все JAR-файлы
+*.jar
+
+# Но НЕ игнорируем Gradle Wrapper JAR
+!gradle/wrapper/gradle-wrapper.jar
+
+# Игнорируем файл конфигурации, как требуется в задании
+app.properties

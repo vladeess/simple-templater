@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Templater.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">simple-templater</a> &gt; <a href="index.source.html" class="el_package">ru.gstu.templater</a> &gt; <span class="el_source">Templater.java</span></div><h1>Templater.java</h1><pre class="source lang-java linenums">package ru.gstu.templater;
+
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Р’С‹РїРѕР»РЅСЏРµС‚ Р·Р°РјРµРЅСѓ РїР»РµР№СЃС…РѕР»РґРµСЂРѕРІ РІ С€Р°Р±Р»РѕРЅРµ РЅР° РѕСЃРЅРѕРІРµ РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРЅС‹С… РґР°РЅРЅС‹С….
+ */
+<span class="fc" id="L10">public class Templater {</span>
+
+    // РџР°С‚С‚РµСЂРЅ РґР»СЏ РїРѕРёСЃРєР° РїР»РµР№СЃС…РѕР»РґРµСЂРѕРІ РІРёРґР° ${key.name}
+<span class="fc" id="L13">    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile(&quot;\\$\\{([^}]+)\\}&quot;);</span>
+
+    /**
+     * Р—Р°РјРµРЅСЏРµС‚ РїР»РµР№СЃС…РѕР»РґРµСЂС‹ РІ СЃС‚СЂРѕРєРµ-С€Р°Р±Р»РѕРЅРµ РЅР° Р·РЅР°С‡РµРЅРёСЏ РёР· РєР°СЂС‚С‹ РґР°РЅРЅС‹С….
+     *
+     * @param template РёСЃС…РѕРґРЅС‹Р№ С€Р°Р±Р»РѕРЅ.
+     * @param data     РєР°СЂС‚Р° СЃ РґР°РЅРЅС‹РјРё РґР»СЏ Р·Р°РјРµРЅС‹.
+     * @return СЃС‚СЂРѕРєР° СЃ Р·Р°РјРµРЅРµРЅРЅС‹РјРё РїР»РµР№СЃС…РѕР»РґРµСЂР°РјРё.
+     */
+    public String process(String template, Map&lt;String, String&gt; data) {
+<span class="fc" id="L23">        Matcher matcher = PLACEHOLDER_PATTERN.matcher(template);</span>
+<span class="fc" id="L24">        StringBuilder result = new StringBuilder();</span>
+
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        while (matcher.find()) {</span>
+<span class="fc" id="L27">            String key = matcher.group(1);</span>
+<span class="fc" id="L28">            String value = data.getOrDefault(key, matcher.group(0)); // Р•СЃР»Рё РєР»СЋС‡Р° РЅРµС‚, РѕСЃС‚Р°РІР»СЏРµРј РєР°Рє Р±С‹Р»Рѕ</span>
+<span class="fc" id="L29">            matcher.appendReplacement(result, Matcher.quoteReplacement(value));</span>
+<span class="fc" id="L30">        }</span>
+<span class="fc" id="L31">        matcher.appendTail(result);</span>
+
+<span class="fc" id="L33">        return result.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

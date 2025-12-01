@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">simple-templater</a> &gt; <a href="index.source.html" class="el_package">ru.gstu.templater</a> &gt; <span class="el_source">DataReader.java</span></div><h1>DataReader.java</h1><pre class="source lang-java linenums">package ru.gstu.templater;
+
+import org.json.JSONObject;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * Р§РёС‚Р°РµС‚ Рё РїР°СЂСЃРёС‚ РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»РѕРІ .properties Рё .json.
+ */
+<span class="fc" id="L15">public class DataReader {</span>
+
+    /**
+     * Р§РёС‚Р°РµС‚ РґР°РЅРЅС‹Рµ РёР· .properties С„Р°Р№Р»Р°.
+     *
+     * @param filePath РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ.
+     * @return Map СЃ РґР°РЅРЅС‹РјРё.
+     * @throws IOException РµСЃР»Рё С„Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ.
+     */
+    public Map&lt;String, String&gt; readProperties(String filePath) throws IOException {
+<span class="fc" id="L25">        Properties properties = new Properties();</span>
+<span class="fc" id="L26">        try (FileReader reader = new FileReader(filePath)) {</span>
+<span class="fc" id="L27">            properties.load(reader);</span>
+        }
+<span class="fc" id="L29">        Map&lt;String, String&gt; dataMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (String key : properties.stringPropertyNames()) {</span>
+<span class="fc" id="L31">            dataMap.put(key, properties.getProperty(key));</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">        return dataMap;</span>
+    }
+
+    /**
+     * Р§РёС‚Р°РµС‚ Рё &quot;СѓРїР»РѕС‰Р°РµС‚&quot; РґР°РЅРЅС‹Рµ РёР· .json С„Р°Р№Р»Р°.
+     *
+     * @param filePath РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ.
+     * @return Map СЃ &quot;РїР»РѕСЃРєРёРјРё&quot; РєР»СЋС‡Р°РјРё.
+     * @throws IOException РµСЃР»Рё С„Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ.
+     */
+    public Map&lt;String, String&gt; readJson(String filePath) throws IOException {
+<span class="fc" id="L44">        String content = new String(Files.readAllBytes(Paths.get(filePath)));</span>
+<span class="fc" id="L45">        JSONObject jsonObject = new JSONObject(content);</span>
+<span class="fc" id="L46">        Map&lt;String, String&gt; dataMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L47">        flattenJson(&quot;&quot;, jsonObject, dataMap);</span>
+<span class="fc" id="L48">        return dataMap;</span>
+    }
+
+    /**
+     * Р РµРєСѓСЂСЃРёРІРЅС‹Р№ РјРµС‚РѕРґ РґР»СЏ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ РІР»РѕР¶РµРЅРЅРѕРіРѕ JSON РІ РїР»РѕСЃРєСѓСЋ Map.
+     *
+     * @param currentPath С‚РµРєСѓС‰РёР№ РїСЂРµС„РёРєСЃ РєР»СЋС‡Р°.
+     * @param jsonObject  С‚РµРєСѓС‰РёР№ JSON-РѕР±СЉРµРєС‚.
+     * @param map         РєР°СЂС‚Р° РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ.
+     */
+    private void flattenJson(String currentPath, JSONObject jsonObject, Map&lt;String, String&gt; map) {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (String key : jsonObject.keySet()) {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            String newPath = currentPath.isEmpty() ? key : currentPath + &quot;.&quot; + key;</span>
+<span class="fc" id="L61">            Object value = jsonObject.get(key);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (value instanceof JSONObject) {</span>
+<span class="fc" id="L63">                flattenJson(newPath, (JSONObject) value, map);</span>
+            } else {
+<span class="fc" id="L65">                map.put(newPath, value.toString());</span>
+            }
+<span class="fc" id="L67">        }</span>
+<span class="fc" id="L68">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

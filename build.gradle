@@ -1,0 +1,72 @@
+// build.gradle
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco' // Плагин для анализа покрытия кода тестами
+}
+
+group = 'ru.gstu'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Зависимость для парсинга JSON
+    implementation 'org.json:json:20231013'
+
+    // Зависимости для тестирования
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+application {
+    // Указываем главный класс, который будет запускаться
+    mainClass = 'ru.gstu.templater.Main'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport // После тестов генерируем отчет о покрытии
+}
+
+jacocoTestReport {
+    dependsOn test // Отчет зависит от выполнения тестов
+
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco')
+    }
+
+    // Правило для CI/CD: сборка упадет, если покрытие меньше 90%
+    finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+            // Исключаем главный класс из проверки покрытия
+            excludes = ['ru.gstu.templater.Main']
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.90 // 90%
+            }
+        }
+    }
+}
+
+// Настраиваем JAR-файл, чтобы он был исполняемым ("толстый" jar)
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClass.get()
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
